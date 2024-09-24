@@ -1,11 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // Importez firebase_core
+import 'package:firebase_auth/firebase_auth.dart'; // Importez firebase_auth
 import './pages/PlaylistPage.dart'; // Remplacez par le bon chemin
 
-void main() async {
+// Remplacez par votre configuration Firebase
+const firebaseOptions = FirebaseOptions(
+  apiKey: "AIzaSyDDt6Y6coCexAJOnVgrlPz_tpC8uqi_pIc", // Clé API
+  appId: "1:661358917252:android:49a297801ccd930d5934d1", // ID de l'application
+  messagingSenderId: "661358917252", // ID de l'expéditeur
+  projectId: "music-k1zust", // ID du projet
+  authDomain: "music-k1zust.firebaseapp.com", // Domaine d'authentification
+  storageBucket: "music-k1zust.appspot.com", // Bucket de stockage
+);
+
+Future<void> main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); // Assurez-vous que Flutter est initialisé
-  await Firebase.initializeApp(); // Initialisez Firebase
+
+  // Vérifiez si Firebase a déjà été initialisé
+  try {
+    await Firebase.initializeApp(
+        options: firebaseOptions); // Initialisez Firebase avec les options
+  } catch (e) {
+    print("Firebase already initialized: $e"); // Gérer l'erreur
+  }
+
   runApp(const MyApp());
 }
 
@@ -31,8 +50,58 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool isLogin =
-      true; // État pour déterminer si c'est le login ou l'inscription
+  final _auth = FirebaseAuth.instance;
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+  bool isLogin = true;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _login() async {
+    try {
+      await _auth.signInWithEmailAndPassword(
+          email: _emailController.text, password: _passwordController.text);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const PlaylistPage()),
+      );
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Erreur de connexion : $e")),
+      );
+    }
+  }
+
+  Future<void> _register() async {
+    if (_passwordController.text != _confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Les mots de passe ne correspondent pas")),
+      );
+      return;
+    }
+
+    try {
+      await _auth.createUserWithEmailAndPassword(
+          email: _emailController.text, password: _passwordController.text);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const PlaylistPage()),
+      );
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Erreur d'inscription : $e")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +165,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 20),
               TextField(
+                controller: _emailController,
                 decoration: InputDecoration(
                   labelText: 'Email',
                   border: OutlineInputBorder(),
@@ -104,16 +174,17 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 10),
               TextField(
+                controller: _passwordController,
                 decoration: InputDecoration(
                   labelText: 'Password',
                   border: OutlineInputBorder(),
                 ),
                 obscureText: true,
               ),
-              if (!isLogin) // Champ supplémentaire pour l'inscription
-                const SizedBox(height: 10),
-              if (!isLogin) // Champ pour confirmer le mot de passe
+              if (!isLogin) const SizedBox(height: 10),
+              if (!isLogin)
                 TextField(
+                  controller: _confirmPasswordController,
                   decoration: InputDecoration(
                     labelText: 'Confirm Password',
                     border: OutlineInputBorder(),
@@ -123,26 +194,23 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  // Ajoutez ici la logique pour se connecter ou s'inscrire
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const PlaylistPage()),
-                  );
+                  if (isLogin) {
+                    _login();
+                  } else {
+                    _register();
+                  }
                 },
                 child: Text(isLogin ? 'Se connecter' : 'S\'inscrire'),
               ),
-              if (isLogin) // Ajout de "Mot de passe oublié ?" seulement pour Login
-                const SizedBox(height: 10),
-              if (isLogin) // Affichage conditionnel du lien
+              if (isLogin) const SizedBox(height: 10),
+              if (isLogin)
                 TextButton(
                   onPressed: () {
-                    // Ajoutez ici la logique pour réinitialiser le mot de passe, si nécessaire
+                    // Logique pour réinitialiser le mot de passe
                   },
                   child: const Text('Mot de passe oublié ?'),
                 ),
               const SizedBox(height: 20),
-              // Boutons pour Google et Facebook
               Text('Ou se connecter avec :'),
               const SizedBox(height: 10),
               Row(
@@ -150,20 +218,19 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(
-                          255, 216, 104, 96), // Couleur pour Google
+                      backgroundColor: const Color.fromARGB(255, 216, 104, 96),
                     ),
                     onPressed: () {
-                      // Ajoutez ici la logique pour se connecter avec Google
+                      // Logique pour se connecter avec Google
                     },
                     child: const Text('Google'),
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue, // Couleur pour Facebook
+                      backgroundColor: Colors.blue,
                     ),
                     onPressed: () {
-                      // Ajoutez ici la logique pour se connecter avec Facebook
+                      // Logique pour se connecter avec Facebook
                     },
                     child: const Text('Facebook'),
                   ),

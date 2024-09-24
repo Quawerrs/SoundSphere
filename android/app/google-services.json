@@ -1,26 +1,44 @@
 {
   "project_info": {
-    "project_number": "1000714566047",
-    "project_id": "soundsphere-90422",
-    "storage_bucket": "soundsphere-90422.appspot.com"
+    "project_number": "661358917252",
+    "firebase_url": "https://music-k1zust-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "music-k1zust",
+    "storage_bucket": "music-k1zust.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1000714566047:android:bcac736052ffe7227ee5aa",
+        "mobilesdk_app_id": "1:661358917252:android:49a297801ccd930d5934d1",
         "android_client_info": {
           "package_name": "com.example.music"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "661358917252-jo3eoqc8s2n7vojmnsqalnodsp2ag6rq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyBbexRct2rTgpSzxSBu3EMstz3VMaqD--Q"
+          "current_key": "AIzaSyDDt6Y6coCexAJOnVgrlPz_tpC8uqi_pIc"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "661358917252-jo3eoqc8s2n7vojmnsqalnodsp2ag6rq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "661358917252-cqd5d220vlshpqtb6ivibohgvdup8ud2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mycompany.music"
+              }
+            }
+          ]
         }
       }
     }
