@@ -10,9 +10,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Music App',
+      title: 'SoundSphere',
       theme: ThemeData.dark(),
-      home: const PlaylistPage(),
+      home: const PlaylistPage(), // Garde PlaylistPage comme page d'accueil
       debugShowCheckedModeBanner: false,
     );
   }
@@ -21,70 +21,29 @@ class MyApp extends StatelessWidget {
 class PlaylistPage extends StatelessWidget {
   const PlaylistPage({super.key});
 
-  final List<Map<String, String>> playlists = [
-    {
-      'title': 'Top Hits',
-    },
-    {
-      'title': 'Chill Vibes',
-    },
-    {
-      'title': 'Daily Mix',
-    },
-    {
-      'title': 'Workout Playlist',
-    },
-    {'title': 'Pop Classics'},
-    {
-      'title': 'Indie Favorites',
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Playlists'),
+        title: const Text('SoundSphere'), // Garde le titre de l'application
         backgroundColor: Colors.black,
-      ),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(10),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(
+                context); // Utilise Navigator.pop pour revenir en arrière
+          },
         ),
-        itemCount: playlists.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              // Ajoutez ici la logique pour ouvrir la playlist
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                image: DecorationImage(
-                  image: AssetImage(playlists[index]['image']!),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: Center(
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  color: Colors.black54,
-                  child: Text(
-                    playlists[index]['title']!,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
+      ),
+      body: const Center(
+        child: Text(
+          'Bienvenue à l\'accueil de SoundSphere',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }

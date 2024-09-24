@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart'; // Importez firebase_core
+import './pages/PlaylistPage.dart'; // Remplacez par le bon chemin
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding
+      .ensureInitialized(); // Assurez-vous que Flutter est initialisé
+  await Firebase.initializeApp(); // Initialisez Firebase
   runApp(const MyApp());
 }
 
@@ -118,7 +123,12 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  // Ajoutez ici la logique pour la connexion ou l'inscription
+                  // Ajoutez ici la logique pour se connecter ou s'inscrire
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const PlaylistPage()),
+                  );
                 },
                 child: Text(isLogin ? 'Se connecter' : 'S\'inscrire'),
               ),
@@ -140,7 +150,8 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red, // Couleur pour Google
+                      backgroundColor: const Color.fromARGB(
+                          255, 216, 104, 96), // Couleur pour Google
                     ),
                     onPressed: () {
                       // Ajoutez ici la logique pour se connecter avec Google
