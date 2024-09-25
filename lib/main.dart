@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // Importez firebase_core
 import 'package:firebase_auth/firebase_auth.dart'; // Importez firebase_auth
-import './pages/PlaylistPage.dart'; // Remplacez par le bon chemin
+import './pages/PlaylistPage.dart'; // Remplacez par le chemin correct vers PlaylistPage
 
 // Remplacez par votre configuration Firebase
 const firebaseOptions = FirebaseOptions(
@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'SoundSphere',
       theme: ThemeData.dark(),
-      home: const LoginPage(),
+      home: const LoginPage(), // Page d'accueil
       debugShowCheckedModeBanner: false, // Enlève le bandeau de démo
     );
   }
@@ -70,7 +70,9 @@ class _LoginPageState extends State<LoginPage> {
           email: _emailController.text, password: _passwordController.text);
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const PlaylistPage()),
+        MaterialPageRoute(
+            builder: (context) =>
+                const PlaylistPage()), // Redirection vers PlaylistPage
       );
     } catch (e) {
       print(e);
@@ -93,7 +95,9 @@ class _LoginPageState extends State<LoginPage> {
           email: _emailController.text, password: _passwordController.text);
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const PlaylistPage()),
+        MaterialPageRoute(
+            builder: (context) =>
+                const PlaylistPage()), // Redirection vers PlaylistPage
       );
     } catch (e) {
       print(e);
@@ -125,14 +129,14 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Toggle pour changer entre Login et Register
+              // Toggle entre Login et Register
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        isLogin = true; // Switch to Login
+                        isLogin = true;
                       });
                     },
                     child: Text(
@@ -148,7 +152,7 @@ class _LoginPageState extends State<LoginPage> {
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        isLogin = false; // Switch to Register
+                        isLogin = false;
                       });
                     },
                     child: Text(
@@ -166,8 +170,11 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 20),
               TextField(
                 controller: _emailController,
+                style: const TextStyle(color: Colors.black), // Couleur du texte
                 decoration: InputDecoration(
                   labelText: 'Email',
+                  labelStyle: const TextStyle(
+                      color: Colors.black), // Couleur de l'étiquette
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.emailAddress,
@@ -175,8 +182,11 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 10),
               TextField(
                 controller: _passwordController,
+                style: const TextStyle(color: Colors.black), // Couleur du texte
                 decoration: InputDecoration(
                   labelText: 'Password',
+                  labelStyle: const TextStyle(
+                      color: Colors.black), // Couleur de l'étiquette
                   border: OutlineInputBorder(),
                 ),
                 obscureText: true,
@@ -185,8 +195,12 @@ class _LoginPageState extends State<LoginPage> {
               if (!isLogin)
                 TextField(
                   controller: _confirmPasswordController,
+                  style:
+                      const TextStyle(color: Colors.black), // Couleur du texte
                   decoration: InputDecoration(
                     labelText: 'Confirm Password',
+                    labelStyle: const TextStyle(
+                        color: Colors.black), // Couleur de l'étiquette
                     border: OutlineInputBorder(),
                   ),
                   obscureText: true,
@@ -202,39 +216,10 @@ class _LoginPageState extends State<LoginPage> {
                 },
                 child: Text(isLogin ? 'Se connecter' : 'S\'inscrire'),
               ),
-              if (isLogin) const SizedBox(height: 10),
-              if (isLogin)
-                TextButton(
-                  onPressed: () {
-                    // Logique pour réinitialiser le mot de passe
-                  },
-                  child: const Text('Mot de passe oublié ?'),
-                ),
               const SizedBox(height: 20),
-              Text('Ou se connecter avec :'),
-              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 216, 104, 96),
-                    ),
-                    onPressed: () {
-                      // Logique pour se connecter avec Google
-                    },
-                    child: const Text('Google'),
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                    ),
-                    onPressed: () {
-                      // Logique pour se connecter avec Facebook
-                    },
-                    child: const Text('Facebook'),
-                  ),
-                ],
+                children: [],
               ),
             ],
           ),

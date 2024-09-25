@@ -1,3 +1,18 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.0.0' // Vérifiez que cette version correspond à votre projet
+        classpath 'com.google.gms:google-services:4.3.10'  // Placez la dépendance ici
+    }
+}
+
+plugins {
+    id 'com.google.gms.google-services' version '4.4.2' apply false
+}
+
 allprojects {
     repositories {
         google()
@@ -6,9 +21,11 @@ allprojects {
 }
 
 rootProject.buildDir = "../build"
+
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
+
 subprojects {
     project.evaluationDependsOn(":app")
 }
@@ -16,7 +33,3 @@ subprojects {
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
-dependencies {
-  classpath 'com.google.gms:google-services:4.3.10'  // Ajoutez ceci dans les dépendances
-}
-
